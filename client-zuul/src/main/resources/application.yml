@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: client-zuul
+server:
+  port: 8080
+zuul:
+  routes:
+    # 面向服务的路由
+    api-a:
+      path: /client/**
+      serviceId: application-provider2 # 对应的是注册中心的服务的名称
+
+      #服务分发的方式是这样的，我们通过localhost:8080/client访问，实际是将地址映射到了client-test这个服务的地址上
+
+    # 传统的路由
+    api-b-url:
+      path: /caller/**
+      #由传统的路由模式，我们可以知道用户访问的路由路径为localhost:8080/caller，将服务映射到了http://localhost:8003
+      url: http://localhost:8003/
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka/
